@@ -134,6 +134,8 @@ class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
+    context_object_name = "task_type_list"
+    template_name = "manager/task_type_list.html"
     paginate_by = 5
 
     def get_context_data(self, **kwargs) -> dict:
@@ -166,17 +168,20 @@ class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = TaskType
     fields = "__all__"
     success_url = reverse_lazy("manager:task-type-list")
+    template_name = "manager/task_type_form.html"
 
 
 class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = TaskType
     fields = "__all__"
     success_url = reverse_lazy("manager:task-type-list")
+    template_name = "manager/task_type_form.html"
 
 
 class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = TaskType
     success_url = reverse_lazy("manager:task-type-list")
+    template_name = "manager/task_type_confirm_delete.html"
 
 
 class TaskListView(LoginRequiredMixin, generic.ListView):
