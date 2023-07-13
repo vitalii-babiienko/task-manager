@@ -73,6 +73,26 @@ urlpatterns = [
         WorkerDeleteView.as_view(),
         name="worker-delete",
     ),
+    path(
+        "task-types/",
+        TaskTypeListView.as_view(),
+        name="task-type-list",
+    ),
+    path(
+        "task-types/create/",
+        TaskTypeCreateView.as_view(),
+        name="task-type-create",
+    ),
+    path(
+        "task-types/<int:pk>/update/",
+        TaskTypeUpdateView.as_view(),
+        name="task-type-update",
+    ),
+    path(
+        "task-types/<int:pk>/delete/",
+        TaskTypeDeleteView.as_view(),
+        name="task-type-delete",
+    ),
 ]
 
 app_name = "manager"
