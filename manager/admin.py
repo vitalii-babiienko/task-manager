@@ -19,6 +19,7 @@ class WorkerAdmin(UserAdmin):
                 {
                     "fields": (
                         "position",
+                        "bio",
                     )
                 }
             ),
@@ -33,6 +34,7 @@ class WorkerAdmin(UserAdmin):
                         "first_name",
                         "last_name",
                         "position",
+                        "bio",
                     )
                 },
             ),
