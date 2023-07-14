@@ -20,6 +20,9 @@ class Worker(AbstractUser):
         on_delete=models.CASCADE,
         null=True,
     )
+    bio = models.TextField(
+        default="Here you can add some bio about you ;)"
+    )
 
     class Meta:
         ordering = ["username"]
