@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 
-from manager.models import Worker, Task
+from manager.models import Worker, Task, Position
 
 
 class WorkerCreationForm(UserCreationForm):
@@ -13,30 +13,30 @@ class WorkerCreationForm(UserCreationForm):
             "first_name",
             "last_name",
             "position",
+            "bio",
         )
 
-    def clean_position(self):
-        return validate_position(self.cleaned_data["position"])
 
-
-class WorkerPositionUpdateForm(forms.ModelForm):
+class PositionForm(forms.ModelForm):
     class Meta:
-        model = Worker
-        fields = ("position",)
+        model = Position
+        fields = ("name",)
 
-    def clean_position(self):
-        return validate_position(self.cleaned_data["position"])
+    def clean_name(self):
+        return validate_position_name(self.cleaned_data["name"])
 
 
-def validate_position(position: str):
-    if not position or not position.replace(" ", ""):
-        raise ValidationError("The position name cannot be empty.")
-    if not all(char.isalpha() or char.isspace() for char in position):
+def validate_position_name(position_name):
+    if not all(char.isalpha() or char.isspace() for char in position_name):
         raise ValidationError(
             "Characters in the position name can be only alphabetic or spaces."
         )
+    if len(position_name) < 2:
+        raise ValidationError(
+            "The position name should have at least two letters."
+        )
 
-    return position
+    return position_name
 
 
 class TaskForm(forms.ModelForm):

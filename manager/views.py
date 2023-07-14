@@ -6,9 +6,9 @@ from django.db.models import QuerySet
 
 from manager.forms import (
     PositionSearchForm,
+    PositionForm,
     WorkerSearchForm,
     WorkerCreationForm,
-    WorkerPositionUpdateForm,
     TaskTypeSearchForm,
     TaskSearchForm,
     TaskForm,
@@ -28,6 +28,7 @@ class IndexView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
 
         context["number_of_workers"] = get_user_model().objects.count()
+        context["number_of_positions"] = Position.objects.count()
         context["number_of_tasks"] = Task.objects.count()
         context["number_of_task_types"] = TaskType.objects.count()
 
@@ -66,13 +67,13 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
     model = Position
-    fields = "__all__"
+    form_class = PositionForm
     success_url = reverse_lazy("manager:position-list")
 
 
 class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Position
-    fields = "__all__"
+    form_class = PositionForm
     success_url = reverse_lazy("manager:position-list")
 
 
@@ -121,9 +122,9 @@ class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     form_class = WorkerCreationForm
 
 
-class WorkerPositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
-    form_class = WorkerPositionUpdateForm
+    fields = ("bio",)
     success_url = reverse_lazy("manager:worker-list")
 
 
