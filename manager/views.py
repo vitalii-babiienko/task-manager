@@ -1,3 +1,5 @@
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.views import generic
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user_model
@@ -234,3 +236,18 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Task
     success_url = reverse_lazy("manager:task-list")
+
+
+class ToggleAssignToTaskView(generic.View):
+    @staticmethod
+    def post(request, pk) -> HttpResponseRedirect:
+        worker = Worker.objects.get(id=request.user.id)
+
+        if get_object_or_404(Task, id=pk) in worker.tasks.all():
+            worker.tasks.remove(pk)
+        else:
+            worker.tasks.add(pk)
+
+        return HttpResponseRedirect(
+            reverse_lazy("manager:task-detail", args=[pk])
+        )
