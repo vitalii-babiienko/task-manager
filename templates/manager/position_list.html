@@ -1,0 +1,59 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+  <title>Positions | Task Manager</title>
+{% endblock %}
+
+{% block content %}
+  <div>
+    <h1>
+      Position List
+    </h1>
+    <a href="{% url 'manager:position-create' %}" class="btn btn-primary link-to-page">
+      Create new position
+    </a>
+
+    {% include "includes/search-form.html" %}
+
+    {% if position_list %}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Update</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for position in position_list %}
+              <tr>
+                <th scope="row">
+                    {{ position.id }}
+                </th>
+                <td>
+                    {{ position.name }}
+                </td>
+                <td>
+                  <a href="{% url 'manager:position-update' pk=position.id %}">
+                    Update
+                  </a>
+                </td>
+                <td>
+                  <a style="color: red"
+                    href="{% url 'manager:position-delete' pk=position.id %}">
+                    Delete
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>There are no positions in the task manager.</p>
+    {% endif %}
+  </div>
+{% endblock %}

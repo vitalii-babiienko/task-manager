@@ -1,0 +1,59 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+  <title>Task Types | Task Manager</title>
+{% endblock %}
+
+{% block content %}
+  <div>
+    <h1>
+      Task Type List
+    </h1>
+    <a href="{% url 'manager:task-type-create' %}" class="btn btn-primary link-to-page">
+      Create new task type
+    </a>
+
+    {% include "includes/search-form.html" %}
+
+    {% if task_type_list %}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Update</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for task_type in task_type_list %}
+              <tr>
+                <th scope="row">
+                    {{ task_type.id }}
+                </th>
+                <td>
+                    {{ task_type.name }}
+                </td>
+                <td>
+                  <a href="{% url 'manager:task-type-update' pk=task_type.id %}">
+                    Update
+                  </a>
+                </td>
+                <td>
+                  <a style="color: red"
+                    href="{% url 'manager:task-type-delete' pk=task_type.id %}">
+                    Delete
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>There are no task types in the task manager.</p>
+    {% endif %}
+  </div>
+{% endblock %}

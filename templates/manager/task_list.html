@@ -1,0 +1,70 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+  <title>Tasks | Task Manager</title>
+{% endblock %}
+
+{% block content %}
+  <div>
+    <h1>
+      Task List
+    </h1>
+    <a href="{% url 'manager:task-create' %}" class="btn btn-primary link-to-page">
+      Create new task
+    </a>
+
+    {% include "includes/search-form.html" %}
+
+    {% if task_list %}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Deadline</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Completed</th>
+              <th scope="col">Task Type</th>
+              <th scope="col">Assignees</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for task in task_list %}
+              <tr>
+                <th scope="row">
+                  {{ task.id }}
+                </th>
+                <td>
+                  <a href="{{ task.get_absolute_url }} ">{{ task.name }}</a>
+                </td>
+                <td>
+                  {{ task.deadline }}
+                </td>
+                <td>
+                  {{ task.priority }}
+                </td>
+                <td>
+                  {{ task.is_completed|yesno:"Yes,No" }}
+                </td>
+                <td>
+                  {{ task.task_type.name }}
+                </td>
+                <td>
+                  {% for worker in task.assignees.all %}
+                    <a href="{{ worker.get_absolute_url }}">{{ worker.first_name }} {{ worker.last_name }}</a>{% if not forloop.last %}, {% endif %}
+                  {% empty %}
+                    No workers assigned
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>There are no tasks in the task manager.</p>
+    {% endif %}
+  </div>
+{% endblock %}
