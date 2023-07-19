@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+  <title>Delete Task Type | Task Manager</title>
+{% endblock %}
+
+{% block content %}
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header pb-0">
+        <h1 class="text-center">Confirm Deletion</h1>
+      </div>
+
+      <div class="card-body text-center">
+        <p class="text-center">Are you sure you want to delete the <strong>{{ tasktype.name }}</strong> task type?</p>
+        <form action="" method="post">
+          {% csrf_token %}
+
+          <input type="submit" value="Yes, I'm sure" class="btn btn-danger me-1">
+          <a href="{% url 'manager:task-type-list' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
