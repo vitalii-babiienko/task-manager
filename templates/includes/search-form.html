@@ -1,0 +1,15 @@
+{% load crispy_forms_filters %}
+
+<form
+  action=""
+  method="get"
+>
+  <div class="d-flex justify-content-center">
+    {{ search_form|crispy }}
+    <input
+      class="btn btn-secondary rounded ms-1"
+      type="submit"
+      value="Search"
+    >
+  </div>
+</form>

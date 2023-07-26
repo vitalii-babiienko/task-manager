@@ -1,0 +1,90 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}
+  <title>Worker Detail | Task Manager</title>
+{% endblock %}
+
+{% block content %}
+  <div class="col-md-10">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <h2 class="card-title">{{ worker.username }}</h2>
+
+          <div>
+            <a href="{% url 'manager:worker-update' pk=worker.id %}" class="btn btn-secondary link-to-page me-1">
+              Update
+            </a>
+            <a href="{% url 'manager:worker-delete' pk=worker.id %}" class="btn btn-danger link-to-page">
+              Delete
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Full name:</strong> {{ worker.first_name }} {{ worker.last_name }}</p>
+            <p><strong>Position:</strong> {{ worker.position }}</p>
+            <p><strong>Email:</strong> <a href="mailto:{{ worker.email }}">{{ worker.email }}</a></p>
+            <p><strong>Admin:</strong> {{ worker.is_staff|yesno:"Yes,No" }}</p>
+          </div>
+
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="bio"><strong>Bio:</strong></label>
+              <textarea class="form-control" id="bio" disabled>{{ worker.bio }}</textarea>
+            </div>
+          </div>
+        </div>
+
+        <h5><strong>Assigned tasks:</strong></h5>
+
+        {% if worker.tasks.all %}
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Deadline</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Completed</th>
+                  <th scope="col">Task Type</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for task in worker.tasks.all %}
+                  <tr>
+                    <th scope="row">
+                      {{ task.id }}
+                    </th>
+                    <td>
+                      <a href="{{ task.get_absolute_url }} ">{{ task.name }}</a>
+                    </td>
+                    <td>
+                      {{ task.deadline }}
+                    </td>
+                    <td>
+                      {{ task.priority }}
+                    </td>
+                    <td>
+                      {{ task.is_completed|yesno:"Yes,No" }}
+                    </td>
+                    <td>
+                      {{ task.task_type.name }}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p>There are no assigned tasks.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
